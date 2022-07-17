@@ -21,9 +21,11 @@ int main(int argc, char **argv) {
   const std::string wordlist{argv[2]};
 
   Poco::Net::ServerSocket srv(target_port); // does bind + listen
-  std::cout << "Creating server on " << target_port << std::endl;
+  std::cout << "[+] Creating server on " << target_port << std::endl;
   while (true) {
     Poco::Net::StreamSocket ss = srv.acceptConnection();
+    auto addr = ss.peerAddress();
+    std::cout << "[+] Connection accepted from " << addr.host() << ":" << addr.port() << std::endl;
     Poco::Net::SocketStream str(ss);
     Wordle w(str, wordlist);
     w.run();
